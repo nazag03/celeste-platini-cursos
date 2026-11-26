@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: celesteplatinipasteleria
+    runtime: node
+    plan: free
+    region: virginia
+    branch: main
+    buildCommand: npm ci && npx prisma generate && npx prisma migrate deploy && npm run build
+    startCommand: npm run start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "20.18.1"
+      - key: NEXT_PUBLIC_SITE_URL
+        value: https://celesteplatinipasteleria.onrender.com
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+      - key: MP_ACCESS_TOKEN
+        sync: false
+      - key: MP_WEBHOOK_SECRET
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false

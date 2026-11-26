@@ -1,0 +1,174 @@
+@import "tailwindcss";
+
+
+:root {
+  --color-cream: #fff8f8;       
+  --color-ivory: #ffedef;       
+  --color-blush: #ffdce0;       
+  --color-blush-deep: #e8a9a9;  
+  --color-cocoa: #2e412c;       
+  --color-cocoa-light: #4f664c; 
+  --color-gold: #c9a35a;        
+  --color-ink: #1e2b1d;         
+
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
+}
+
+
+@font-face {
+  font-family: "High Cruiser";
+  src: local("High Cruiser"),
+    url("/fonts/high-cruiser.woff2") format("woff2"),
+    url("/fonts/high-cruiser.otf") format("opentype"),
+    url("/fonts/high-cruiser.ttf") format("truetype");
+  font-display: swap;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-cream: var(--color-cream);
+  --color-ivory: var(--color-ivory);
+  --color-blush: var(--color-blush);
+  --color-blush-deep: var(--color-blush-deep);
+  --color-cocoa: var(--color-cocoa);
+  --color-cocoa-light: var(--color-cocoa-light);
+  --color-gold: var(--color-gold);
+  --color-ink: var(--color-ink);
+
+  --font-display: var(--font-cormorant);
+  --font-sans: var(--font-open-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "kern", "liga";
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, .font-display {
+  font-family: var(--font-display), ui-serif, Georgia, serif;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+
+.font-brand {
+  font-family: "High Cruiser", var(--font-bebas), ui-sans-serif, sans-serif;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+::selection {
+  background: var(--color-blush);
+  color: var(--color-cocoa);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-blush-deep);
+  outline-offset: 3px;
+}
+
+
+@layer components {
+  .input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid rgb(46 65 44 / 0.15);
+    background: #fff;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.875rem;
+    transition: border-color 150ms, box-shadow 150ms;
+  }
+  .input:hover {
+    border-color: rgb(46 65 44 / 0.3);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--color-cocoa);
+    box-shadow: 0 0 0 4px rgb(232 169 169 / 0.35);
+  }
+}
+
+
+.arch {
+  border-radius: 999px 999px 1.5rem 1.5rem;
+}
+
+
+.grain {
+  position: relative;
+  isolation: isolate;
+}
+.grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.35;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.9 0 0 0 0 0.66 0 0 0 0 0.66 0 0 0 0.10 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: none; }
+}
+.rise {
+  animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.rise-delay-1 { animation-delay: 0.12s; }
+.rise-delay-2 { animation-delay: 0.24s; }
+.rise-delay-3 { animation-delay: 0.36s; }
+
+
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .reveal,
+  .rise,
+  .marquee-track {
+    animation: none !important;
+  }
+}
